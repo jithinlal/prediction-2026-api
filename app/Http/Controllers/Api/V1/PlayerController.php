@@ -21,6 +21,11 @@ class PlayerController extends Controller
 		$filter = new PlayerFilter();
 		$query = Player::query();
 
+		$includeTeam = $request->query('team');
+		if ($includeTeam) {
+			$query = $query->with('team');
+		}
+		
 		$queryItems = $filter->transform($request);
 
 		$isStar = $request->query('isStar');

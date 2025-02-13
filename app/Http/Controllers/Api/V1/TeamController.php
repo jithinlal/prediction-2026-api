@@ -23,7 +23,7 @@ class TeamController extends Controller
 
 		$queryItems = $filter->transform($request);
 
-		$includePlayers = $request->query('includePlayers');
+		$includePlayers = $request->query('players');
 
 		if ($includePlayers) {
 			$query = $query->with('players');

@@ -14,7 +14,7 @@ class GroupController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index()
+	public function index(): GroupCollection
 	{
 		return new GroupCollection(Group::all());
 	}
@@ -38,7 +38,7 @@ class GroupController extends Controller
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(Group $group)
+	public function show(Group $group): GroupResource
 	{
 		return new GroupResource($group);
 	}
