@@ -5,16 +5,48 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePlayerRequest;
 use App\Http\Requests\UpdatePlayerRequest;
+use App\Http\Resources\V1\PlayerCollection;
+use App\Http\Resources\V1\PlayerResource;
 use App\Models\Player;
+use App\Filters\V1\PlayerFilter;
+use Illuminate\Http\Request;
 
 class PlayerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
+    public function index(Request $request): PlayerCollection {
+        $filter = new PlayerFilter();
+        $query = Player::query();
+
+        $queryItems = $filter->transform($request);
+
+				$isStar = $request->query('isStar');
+				$isInjured = $request->query('isInjured');
+
+				if ($isStar) {
+					$query = $query->where('is_star','=', true);
+				}
+
+				if ($isInjured) {
+					$query = $query->where('is_injured','=', true);
+				}
+
+
+        if (count($queryItems) === 0) {
+            return new PlayerCollection(Player::paginate());
+        }
+
+        foreach ($queryItems as $item) {
+            $query = match ($item[1]) {
+                'LIKE' => $query->where($item[0], 'LIKE', $item[2]),
+                'IN' => $query->whereIn($item[0], $item[2]),
+                default => $query->where($item[0], $item[1], $item[2])
+            };
+        }
+
+        return new PlayerCollection($query->paginate()->appends($request->query()));
     }
 
     /**
@@ -36,9 +68,8 @@ class PlayerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Player $player)
-    {
-        //
+    public function show(Player $player): PlayerResource {
+        return new PlayerResource($player);
     }
 
     /**
