@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\StoreStatPredictionRequest;
-use App\Http\Requests\UpdateStatPredictionRequest;
-use App\Models\StatPrediction;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreGameRequest;
+use App\Http\Requests\UpdateGameRequest;
+use App\Models\Game;
 
-class StatPredictionController extends Controller
+class GameController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class StatPredictionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStatPredictionRequest $request)
+    public function store(StoreGameRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class StatPredictionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(StatPrediction $statPrediction)
+    public function show(Game $game)
     {
         //
     }
@@ -43,7 +44,7 @@ class StatPredictionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(StatPrediction $statPrediction)
+    public function edit(Game $game)
     {
         //
     }
@@ -51,7 +52,7 @@ class StatPredictionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStatPredictionRequest $request, StatPrediction $statPrediction)
+    public function update(UpdateGameRequest $request, Game $game)
     {
         //
     }
@@ -59,7 +60,7 @@ class StatPredictionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(StatPrediction $statPrediction)
+    public function destroy(Game $game)
     {
         //
     }

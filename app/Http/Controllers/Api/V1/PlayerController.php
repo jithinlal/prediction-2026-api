@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\StoreStatRequest;
-use App\Http\Requests\UpdateStatRequest;
-use App\Models\Stat;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePlayerRequest;
+use App\Http\Requests\UpdatePlayerRequest;
+use App\Models\Player;
 
-class StatController extends Controller
+class PlayerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class StatController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStatRequest $request)
+    public function store(StorePlayerRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class StatController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Stat $stat)
+    public function show(Player $player)
     {
         //
     }
@@ -43,7 +44,7 @@ class StatController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Stat $stat)
+    public function edit(Player $player)
     {
         //
     }
@@ -51,7 +52,7 @@ class StatController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStatRequest $request, Stat $stat)
+    public function update(UpdatePlayerRequest $request, Player $player)
     {
         //
     }
@@ -59,7 +60,7 @@ class StatController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Stat $stat)
+    public function destroy(Player $player)
     {
         //
     }

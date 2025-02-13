@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\StoreGamePredictionRequest;
-use App\Http\Requests\UpdateGamePredictionRequest;
-use App\Models\GamePrediction;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTeamRequest;
+use App\Http\Requests\UpdateTeamRequest;
+use App\Models\Team;
 
-class GamePredictionController extends Controller
+class TeamController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class GamePredictionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreGamePredictionRequest $request)
+    public function store(StoreTeamRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class GamePredictionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(GamePrediction $gamePrediction)
+    public function show(Team $team)
     {
         //
     }
@@ -43,7 +44,7 @@ class GamePredictionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(GamePrediction $gamePrediction)
+    public function edit(Team $team)
     {
         //
     }
@@ -51,7 +52,7 @@ class GamePredictionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateGamePredictionRequest $request, GamePrediction $gamePrediction)
+    public function update(UpdateTeamRequest $request, Team $team)
     {
         //
     }
@@ -59,7 +60,7 @@ class GamePredictionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(GamePrediction $gamePrediction)
+    public function destroy(Team $team)
     {
         //
     }
