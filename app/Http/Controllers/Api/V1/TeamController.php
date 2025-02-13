@@ -22,6 +22,12 @@ class TeamController extends Controller
 
 			$queryItems = $filter->transform($request);
 
+			$includePlayers = $request->query('includePlayers');
+
+			if ($includePlayers) {
+				$query = $query->with('players');
+			}
+
 			if(count($queryItems) === 0) {
 				return new TeamCollection(Team::paginate());
 			}

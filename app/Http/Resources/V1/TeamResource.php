@@ -23,6 +23,7 @@ class TeamResource extends JsonResource
 					'rank' => $this->rank,
 					'worldCups' => $this->world_cups,
 					'manager' => $this->manager_name,
+					'players' => PlayerResource::collection($this->whenLoaded('players')),
 				];
     }
 }

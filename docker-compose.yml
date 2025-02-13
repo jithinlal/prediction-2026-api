@@ -19,6 +19,7 @@ services:
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
             PHP_MAX_EXECUTION_TIME: 120
             PHP_MAX_INPUT_TIME: 60
+            PHP_IDE_CONFIG: "serverName=Docker"
         volumes:
             - '.:/var/www/html'
         networks:
