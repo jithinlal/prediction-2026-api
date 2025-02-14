@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Filters\V1\PlayerFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePlayerRequest;
 use App\Http\Requests\UpdatePlayerRequest;
+use App\Http\Requests\V1\ImportPlayerRequest;
+use App\Http\Requests\V1\StorePlayerRequest;
 use App\Http\Resources\V1\PlayerCollection;
 use App\Http\Resources\V1\PlayerResource;
 use App\Models\Player;
-use App\Filters\V1\PlayerFilter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class PlayerController extends Controller
 {
@@ -25,7 +27,7 @@ class PlayerController extends Controller
 		if ($includeTeam) {
 			$query = $query->with('team');
 		}
-		
+
 		$queryItems = $filter->transform($request);
 
 		$isStar = $request->query('isStar');
@@ -68,6 +70,14 @@ class PlayerController extends Controller
 	public function store(StorePlayerRequest $request)
 	{
 		//
+	}
+
+	public function import(ImportPlayerRequest $request): void {
+		$bulk = collect($request->all())->map(function ($arr, $key) {
+			return Arr::except($arr, ['teamId', 'isStar', 'isInjured']);
+		});
+
+		Player::insert($bulk->toArray());
 	}
 
 	/**
