@@ -2,19 +2,42 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Filters\V1\StatPredictionFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStatPredictionRequest;
 use App\Http\Requests\UpdateStatPredictionRequest;
+use App\Http\Resources\v1\StatPredictionResource;
 use App\Models\StatPrediction;
+use Illuminate\Http\Request;
 
 class StatPredictionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
+    public function index(Request $request): StatPredictionResource {
+     	$filter = new StatPredictionFilter();
+			 $query = StatPrediction::query();
+
+			 $query = $query->with('user');
+			 $query = $query->with('game');
+			 $query = $query->with('player');
+
+			 $queryItems = $filter->transform($request);
+
+			 if (count($queryItems) === 0) {
+				 return new StatPredictionResource($query->paginate());
+			 }
+
+			 foreach ($queryItems as $item) {
+				 $query = match ($item[1]) {
+					 'LIKE' => $query->where($item[0], 'LIKE', $item[2]),
+					 'IN' => $query->whereIn($item[0], $item[2]),
+					 default => $query->where($item[0], $item[1], $item[2])
+				 };
+			 }
+
+			 return new StatPredictionResource($query->paginate()->appends($request->query()));
     }
 
     /**
@@ -36,9 +59,8 @@ class StatPredictionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(StatPrediction $statPrediction)
-    {
-        //
+    public function show(StatPrediction $statPrediction): StatPredictionResource {
+        return new StatPredictionResource($statPrediction);
     }
 
     /**
