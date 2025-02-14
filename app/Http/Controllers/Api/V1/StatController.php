@@ -62,7 +62,7 @@ class StatController extends Controller
 	 */
 	public function show(Stat $stat): StatResource
 	{
-		return new StatResource($stat);
+		return new StatResource($stat->loadMissing('game', 'player'));
 	}
 
 	/**
