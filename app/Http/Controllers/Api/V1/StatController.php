@@ -2,19 +2,43 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Filters\V1\StatFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStatRequest;
 use App\Http\Requests\UpdateStatRequest;
+use App\Http\Resources\V1\StatCollection;
+use App\Http\Resources\V1\StatResource;
 use App\Models\Stat;
+use Illuminate\Http\Request;
 
 class StatController extends Controller
 {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index()
+	public function index(Request $request): StatCollection
 	{
-		//
+		$filter = new StatFilter();
+		$query = Stat::query();
+
+		$query = $query->with('game');
+		$query = $query->with('player');
+
+		$queryItems = $filter->transform($request);
+
+		if (count($queryItems) === 0) {
+			return new StatCollection($query->paginate());
+		}
+
+		foreach ($queryItems as $item) {
+			$query = match ($item[1]) {
+				'LIKE' => $query->where($item[0], 'LIKE', $item[2]),
+				'IN' => $query->whereIn($item[0], $item[2]),
+				default => $query->where($item[0], $item[1], $item[2])
+			};
+		}
+
+		return new StatCollection($query->paginate()->appends($request->query()));
 	}
 
 	/**
@@ -36,9 +60,9 @@ class StatController extends Controller
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(Stat $stat)
+	public function show(Stat $stat): StatResource
 	{
-		//
+		return new StatResource($stat);
 	}
 
 	/**
