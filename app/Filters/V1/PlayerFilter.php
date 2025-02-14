@@ -4,7 +4,6 @@ namespace App\Filters\V1;
 
 
 use App\Filters\ApiFilter;
-use Illuminate\Http\Request;
 
 class PlayerFilter extends ApiFilter
 {

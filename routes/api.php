@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\V1\GameController;
+use App\Http\Controllers\Api\V1\GamePredictionController;
 use App\Http\Controllers\Api\V1\GroupController;
 use App\Http\Controllers\Api\V1\PlayerController;
 use App\Http\Controllers\Api\V1\StatController;
+use App\Http\Controllers\Api\V1\StatPredictionController;
 use App\Http\Controllers\Api\V1\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,4 +20,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
 	Route::apiResource('players', PlayerController::class);
 	Route::apiResource('games', GameController::class);
 	Route::apiResource('stats', StatController::class);
+	Route::apiResource('statPredictions', StatPredictionController::class);
+	Route::apiResource('gamePredictions', GamePredictionController::class);
 });

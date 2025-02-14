@@ -6,6 +6,7 @@ use App\Filters\V1\StatPredictionFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreStatPredictionRequest;
 use App\Http\Requests\UpdateStatPredictionRequest;
+use App\Http\Resources\v1\StatPredictionCollection;
 use App\Http\Resources\v1\StatPredictionResource;
 use App\Models\StatPrediction;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class StatPredictionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): StatPredictionResource {
+    public function index(Request $request): StatPredictionCollection {
      	$filter = new StatPredictionFilter();
 			 $query = StatPrediction::query();
 
@@ -26,7 +27,7 @@ class StatPredictionController extends Controller
 			 $queryItems = $filter->transform($request);
 
 			 if (count($queryItems) === 0) {
-				 return new StatPredictionResource($query->paginate());
+				 return new StatPredictionCollection($query->paginate());
 			 }
 
 			 foreach ($queryItems as $item) {
@@ -37,7 +38,7 @@ class StatPredictionController extends Controller
 				 };
 			 }
 
-			 return new StatPredictionResource($query->paginate()->appends($request->query()));
+			 return new StatPredictionCollection($query->paginate()->appends($request->query()));
     }
 
     /**
