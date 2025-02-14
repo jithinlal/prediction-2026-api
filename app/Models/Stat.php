@@ -11,6 +11,12 @@ class Stat extends Model
 	/** @use HasFactory<\Database\Factories\StatFactory> */
 	use HasFactory;
 
+	protected $fillable = [
+		'game_id',
+		'player_id',
+		'type',
+	];
+
 	public function game(): BelongsTo
 	{
 		return $this->belongsTo(Game::class);

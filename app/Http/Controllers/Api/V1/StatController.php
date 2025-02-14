@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\StatFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreStatRequest;
-use App\Http\Requests\UpdateStatRequest;
+use App\Http\Requests\V1\StoreStatRequest;
+use App\Http\Requests\V1\UpdateStatRequest;
 use App\Http\Resources\V1\StatCollection;
 use App\Http\Resources\V1\StatResource;
 use App\Models\Stat;
@@ -52,9 +52,9 @@ class StatController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(StoreStatRequest $request)
+	public function store(StoreStatRequest $request): StatResource
 	{
-		//
+		return new StatResource(Stat::create($request->all())->loadMissing('game', 'player'));
 	}
 
 	/**
@@ -76,9 +76,9 @@ class StatController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(UpdateStatRequest $request, Stat $stat)
+	public function update(UpdateStatRequest $request, Stat $stat): void
 	{
-		//
+		$stat->update($request->all());
 	}
 
 	/**

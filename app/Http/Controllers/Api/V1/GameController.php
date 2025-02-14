@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\GameFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreGameRequest;
-use App\Http\Requests\UpdateGameRequest;
+use App\Http\Requests\V1\StoreGameRequest;
+use App\Http\Requests\V1\UpdateGameRequest;
 use App\Http\Resources\V1\GameCollection;
 use App\Http\Resources\V1\GameResource;
 use App\Models\Game;
