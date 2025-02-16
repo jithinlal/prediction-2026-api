@@ -4,6 +4,10 @@ up:
 down:
 	./vendor/bin/sail down
 
+restart:
+	make down
+	make up
+
 dev: # run front end dev environment
 	yarn run dev
 
