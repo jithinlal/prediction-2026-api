@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\PlayerFilter;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\UpdatePlayerRequest;
 use App\Http\Requests\V1\ImportPlayerRequest;
 use App\Http\Requests\V1\StorePlayerRequest;
@@ -13,13 +13,11 @@ use App\Models\Player;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
-class PlayerController extends Controller
-{
+class PlayerController extends ApiController {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index(Request $request): PlayerCollection
-	{
+	public function index(Request $request): PlayerCollection {
 		$filter = new PlayerFilter();
 		$query = Player::query();
 
@@ -59,16 +57,14 @@ class PlayerController extends Controller
 	/**
 	 * Show the form for creating a new resource.
 	 */
-	public function create()
-	{
+	public function create() {
 		//
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(StorePlayerRequest $request)
-	{
+	public function store(StorePlayerRequest $request) {
 		//
 	}
 
@@ -83,32 +79,28 @@ class PlayerController extends Controller
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(Player $player): PlayerResource
-	{
+	public function show(Player $player): PlayerResource {
 		return new PlayerResource($player);
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 */
-	public function edit(Player $player)
-	{
+	public function edit(Player $player) {
 		//
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(UpdatePlayerRequest $request, Player $player)
-	{
+	public function update(UpdatePlayerRequest $request, Player $player) {
 		//
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(Player $player)
-	{
+	public function destroy(Player $player) {
 		//
 	}
 }

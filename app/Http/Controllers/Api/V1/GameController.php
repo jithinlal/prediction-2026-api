@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\GameFilter;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 use App\Http\Requests\V1\StoreGameRequest;
 use App\Http\Requests\V1\UpdateGameRequest;
 use App\Http\Resources\V1\GameCollection;
@@ -11,13 +11,11 @@ use App\Http\Resources\V1\GameResource;
 use App\Models\Game;
 use Illuminate\Http\Request;
 
-class GameController extends Controller
-{
+class GameController extends ApiController {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index(Request $request): GameCollection
-	{
+	public function index(Request $request): GameCollection {
 		$filter = new GameFilter();
 		$query = Game::query();
 
@@ -44,48 +42,42 @@ class GameController extends Controller
 	/**
 	 * Show the form for creating a new resource.
 	 */
-	public function create()
-	{
+	public function create() {
 		//
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(StoreGameRequest $request)
-	{
+	public function store(StoreGameRequest $request) {
 		//
 	}
 
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(Game $game): GameResource
-	{
+	public function show(Game $game): GameResource {
 		return new GameResource($game);
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 */
-	public function edit(Game $game)
-	{
+	public function edit(Game $game) {
 		//
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(UpdateGameRequest $request, Game $game)
-	{
+	public function update(UpdateGameRequest $request, Game $game) {
 		//
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(Game $game)
-	{
+	public function destroy(Game $game) {
 		//
 	}
 }

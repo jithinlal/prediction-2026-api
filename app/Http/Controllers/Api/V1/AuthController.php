@@ -12,14 +12,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends ApiController
-{
-	public function __construct(private readonly AuthService $service)
-	{
+class AuthController extends ApiController {
+	public function __construct(private readonly AuthService $service) {
 	}
 
-	public function register(RegisterRequest $request): JsonResponse
-	{
+	public function register(RegisterRequest $request): JsonResponse {
 		$userData = $request->validated();
 
 		try {
@@ -35,8 +32,7 @@ class AuthController extends ApiController
 		]);
 	}
 
-	public function login(LoginRequest $request): JsonResponse
-	{
+	public function login(LoginRequest $request): JsonResponse {
 		$credentials = $request->validated();
 
 		if (!Auth::attempt($credentials)) {
@@ -53,8 +49,7 @@ class AuthController extends ApiController
 		]);
 	}
 
-	public function refresh(Request $request): JsonResponse
-	{
+	public function refresh(Request $request): JsonResponse {
 		$user = Auth::user();
 		$request->user()->tokens()->delete();
 		$tokens = $this->service->generateTokens($user);
@@ -62,8 +57,7 @@ class AuthController extends ApiController
 		return $this->sendResponseWithTokens($tokens);
 	}
 
-	public function logout(Request $request): JsonResponse
-	{
+	public function logout(Request $request): JsonResponse {
 		if (Auth::check()) {
 			$request->user()->tokens()->delete();
 		}
@@ -74,8 +68,7 @@ class AuthController extends ApiController
 			->withCookie($cookie);
 	}
 
-	private function sendResponseWithTokens(array $tokens, $body = []): JsonResponse
-	{
+	private function sendResponseWithTokens(array $tokens, $body = []): JsonResponse {
 		$rtExpireTime = config('sanctum.rt_expiration');
 		$cookie = cookie('refreshToken', $tokens['refreshToken'], $rtExpireTime, secure: true);
 

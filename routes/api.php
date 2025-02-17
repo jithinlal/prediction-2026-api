@@ -18,14 +18,14 @@ Route::get('/user', function (Request $request) {
 Route::prefix('auth')->group(function () {
 	Route::post('/register', [AuthController::class, 'register']);
 	Route::post('/login', [AuthController::class, 'login']);
-	Route::post('/logout', [AuthController::class, 'logout']);
 
 	Route::middleware('auth:sanctum')->group(function () {
+		Route::post('/logout', [AuthController::class, 'logout']);
 		Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh');
 	});
 });
 
-Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function () {
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1', 'middleware' => 'auth:sanctum'], function () {
 	Route::apiResource('groups', GroupController::class);
 	Route::apiResource('teams', TeamController::class);
 	Route::apiResource('players', PlayerController::class);

@@ -5,11 +5,9 @@ namespace App;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-trait HttpApiResponse
-{
+trait HttpApiResponse {
 
-	public function successResponse($data = [], $message = 'Success.', $code = Response::HTTP_OK): JsonResponse
-	{
+	public function successResponse($data = [], $message = 'Success.', $code = Response::HTTP_OK): JsonResponse {
 		return response()->json([
 			'status' => true,
 			'data' => $data,
@@ -21,8 +19,7 @@ trait HttpApiResponse
 		$data = [],
 		$message = 'Something went wrong.',
 		$code = Response::HTTP_UNPROCESSABLE_ENTITY
-	): JsonResponse
-	{
+	): JsonResponse {
 		return response()->json([
 			'status' => false,
 			'data' => $data,
@@ -30,8 +27,7 @@ trait HttpApiResponse
 		], $code);
 	}
 
-	public function unauthorized(): JsonResponse
-	{
+	public function unauthorized(): JsonResponse {
 		return $this->errorResponse(message: 'Unauthorized.', code: Response::HTTP_UNAUTHORIZED);
 	}
 }
