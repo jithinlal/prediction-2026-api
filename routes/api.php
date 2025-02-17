@@ -34,5 +34,5 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
 	Route::apiResource('statPredictions', StatPredictionController::class);
 	Route::apiResource('gamePredictions', GamePredictionController::class);
 
-	Route::post('players/import', ['uses' => 'PlayerController@import']);
+	Route::post('players/import', [PlayerController::class, 'import']);
 });
