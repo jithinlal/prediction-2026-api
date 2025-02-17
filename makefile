@@ -21,4 +21,9 @@ fresh-seed:
 	make migrate-fresh
 	make migrate-seed
 
+clear:
+	./vendor/bin/sail artisan config:clear
+	./vendor/bin/sail artisan config:cache
+	./vendor/bin/sail artisan cache:clear
+
 .PHONY: up down dev migrate-fresh migrate-seed

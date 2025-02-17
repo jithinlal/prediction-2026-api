@@ -15,15 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
 		health: '/up',
 	)
 	->withMiddleware(function (Middleware $middleware) {
-		$middleware->statefulApi();
-
-		$middleware->redirectUsersTo(function (Request $request) {
-			if ($request->expectsJson()) {
-				throw new AlreadyAuthenticatedException();
-			}
-
-			return '/';
-		});
+		$middleware->encryptCookies([
+			'refreshToken'
+		]);
 	})
 	->withExceptions(function (Exceptions $exceptions) {
 		//
