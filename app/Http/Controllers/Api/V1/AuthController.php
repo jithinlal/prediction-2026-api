@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class AuthController extends Controller {
+class AuthController extends Controller
+{
 	/**
 	 * The cookie names used for tokens
 	 */
@@ -22,7 +23,8 @@ class AuthController extends Controller {
 	const ACCESS_TOKEN_EXPIRATION = 60 * 24; // 24 hours
 	const REFRESH_TOKEN_EXPIRATION = 60 * 24 * 30; // 30 days
 
-	public function register(Request $request) {
+	public function register(Request $request)
+	{
 		$request->validate([
 			'name' => ['required', 'string', 'max:255'],
 			'email' => ['required', 'string', 'email', 'unique:users'],
@@ -39,7 +41,8 @@ class AuthController extends Controller {
 		return $this->createTokensAndRespond($user, 'User registered successfully');
 	}
 
-	public function login(Request $request) {
+	public function login(Request $request)
+	{
 		$request->validate([
 			'email' => ['required', 'email'],
 			'password' => ['required']
@@ -58,7 +61,8 @@ class AuthController extends Controller {
 		return $this->createTokensAndRespond($user, 'Logged in successfully');
 	}
 
-	public function refresh(Request $request) {
+	public function refresh(Request $request)
+	{
 		try {
 			$refreshToken = $request->cookie(self::REFRESH_TOKEN_COOKIE);
 
@@ -92,7 +96,8 @@ class AuthController extends Controller {
 		}
 	}
 
-	public function logout(Request $request) {
+	public function logout(Request $request)
+	{
 		try {
 			$request->user()->tokens()->delete();
 
@@ -114,7 +119,8 @@ class AuthController extends Controller {
 		}
 	}
 
-	private function createTokensAndRespond(User $user, string $message) {
+	private function createTokensAndRespond(User $user, string $message)
+	{
 		$accessToken = $user->createToken('auth_token', [$user->role])->plainTextToken;
 		$refreshToken = Str::random(64);
 
@@ -131,7 +137,8 @@ class AuthController extends Controller {
 		return $this->setTokenCookies($response, $accessToken, $refreshToken);
 	}
 
-	private function setTokenCookies($response, $accessToken, $refreshToken) {
+	private function setTokenCookies($response, $accessToken, $refreshToken)
+	{
 		$secure = !app()->environment('local');
 
 		return $response->cookie(
@@ -157,7 +164,8 @@ class AuthController extends Controller {
 		);
 	}
 
-	private function clearTokenCookies($response) {
+	private function clearTokenCookies($response)
+	{
 		return $response
 			->cookie(
 				self::ACCESS_TOKEN_COOKIE,
