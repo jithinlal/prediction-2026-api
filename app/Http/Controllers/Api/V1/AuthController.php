@@ -143,7 +143,7 @@ class AuthController extends Controller {
 			$secure,
 			true,
 			false,
-			'Strict'
+			'Lax'
 		)->cookie(
 			self::REFRESH_TOKEN_COOKIE,
 			$refreshToken,
@@ -153,7 +153,7 @@ class AuthController extends Controller {
 			$secure,
 			true,
 			false,
-			'Strict'
+			'Lax'
 		);
 	}
 
