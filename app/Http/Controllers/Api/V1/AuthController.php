@@ -12,11 +12,14 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends ApiController {
-	public function __construct(private readonly AuthService $service) {
+class AuthController extends ApiController
+{
+	public function __construct(private readonly AuthService $service)
+	{
 	}
 
-	public function register(RegisterRequest $request): JsonResponse {
+	public function register(RegisterRequest $request): JsonResponse
+	{
 		$userData = $request->validated();
 
 		try {
@@ -27,12 +30,14 @@ class AuthController extends ApiController {
 
 		$tokens = $this->service->generateTokens($user);
 
-		return $this->sendResponseWithTokens($tokens, [
-			'user' => UserResource::make($user)
-		]);
+		return $this
+			->sendResponseWithTokens($tokens, [
+				'user' => UserResource::make($user)
+			]);
 	}
 
-	public function login(LoginRequest $request): JsonResponse {
+	public function login(LoginRequest $request): JsonResponse
+	{
 		$credentials = $request->validated();
 
 		if (!Auth::attempt($credentials)) {
@@ -44,36 +49,46 @@ class AuthController extends ApiController {
 		$user = Auth::user();
 		$tokens = $this->service->generateTokens($user);
 
-		return $this->sendResponseWithTokens($tokens, [
-			'user' => UserResource::make($user),
-		]);
+		return $this
+			->sendResponseWithTokens($tokens, [
+				'user' => UserResource::make($user),
+			]);
 	}
 
-	public function refresh(Request $request): JsonResponse {
+	public function refresh(Request $request): JsonResponse
+	{
 		$user = Auth::user();
 		$request->user()->tokens()->delete();
 		$tokens = $this->service->generateTokens($user);
 
-		return $this->sendResponseWithTokens($tokens);
+		return $this
+			->sendResponseWithTokens($tokens);
 	}
 
-	public function logout(Request $request): JsonResponse {
+	public function logout(Request $request): JsonResponse
+	{
 		if (Auth::check()) {
 			$request->user()->tokens()->delete();
 		}
 		$cookie = cookie()->forget('refreshToken');
+		$accessTokenCookie = cookie()->forget('accessToken');
 
 		return $this
 			->successResponse(message: 'Successfully logged out.')
-			->withCookie($cookie);
+			->withCookie($cookie)
+			->withCookie($accessTokenCookie);
 	}
 
-	private function sendResponseWithTokens(array $tokens, $body = []): JsonResponse {
+	private function sendResponseWithTokens(array $tokens, $body = []): JsonResponse
+	{
+		$atExpireTime = config('sanctum.expiration');
 		$rtExpireTime = config('sanctum.rt_expiration');
 		$cookie = cookie('refreshToken', $tokens['refreshToken'], $rtExpireTime, secure: true);
+		$accessTokenCookie = cookie('accessToken', $tokens['accessToken'], $atExpireTime, secure: true);
 
-		return $this->successResponse(array_merge($body, [
-			'accessToken' => $tokens['accessToken']
-		]))->withCookie($cookie);
+		return $this
+			->successResponse($body)
+			->withCookie($cookie)
+			->withCookie($accessTokenCookie);
 	}
 }
