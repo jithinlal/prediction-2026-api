@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// TODO :: remove this route
 Route::get('/user', function (Request $request) {
 	return $request->user();
 })->middleware('auth:sanctum');
@@ -35,4 +36,4 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1', 'm
 	Route::apiResource('gamePredictions', GamePredictionController::class);
 
 	Route::post('players/import', [PlayerController::class, 'import']);
-});
+})->middleware('auth:sanctum');
