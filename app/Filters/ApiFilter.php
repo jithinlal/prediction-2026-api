@@ -17,7 +17,7 @@ class ApiFilter
 	{
 		switch ($operator) {
 			case 'like':
-				$queryItems[] = [$column, $this->operatorMap[$operator], "%{$value}%"];
+				$queryItems[] = [$column, $this->operatorMap[$operator], "%$value%"];
 				return $queryItems;
 
 			case 'in':
@@ -31,7 +31,8 @@ class ApiFilter
 		}
 	}
 
-	public function transform(Request $request): array {
+	public function transform(Request $request): array
+	{
 		$eloQuery = [];
 
 		foreach ($this->safeParams as $param => $operators) {
@@ -44,7 +45,7 @@ class ApiFilter
 			$column = $this->columnMap[$param] ?? $param;
 
 			foreach ($operators as $operator) {
-				if(isset($query[$operator])) {
+				if (isset($query[$operator])) {
 					$value = $query[$operator];
 
 					$eloQuery = $this->handleOperator($eloQuery, $column, $operator, $value);

@@ -23,6 +23,9 @@ class TeamController extends ApiController
 
 		$queryItems = $filter->transform($request);
 
+		$perPage = $request->query('pageSize', 8);
+		$perPage = min($perPage, 24);
+
 		$includePlayers = $request->query('players');
 
 		if ($includePlayers) {
@@ -30,7 +33,7 @@ class TeamController extends ApiController
 		}
 
 		if (count($queryItems) === 0) {
-			return new TeamCollection($query->paginate());
+			return new TeamCollection($query->paginate($perPage));
 		}
 
 		foreach ($queryItems as $item) {
@@ -41,7 +44,7 @@ class TeamController extends ApiController
 			};
 		}
 
-		return new TeamCollection($query->paginate()->appends($request->query()));
+		return new TeamCollection($query->paginate($perPage)->appends($request->query()));
 	}
 
 	/**

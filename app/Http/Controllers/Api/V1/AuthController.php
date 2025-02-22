@@ -43,7 +43,7 @@ class AuthController extends ApiController
 		if (!Auth::attempt($credentials)) {
 			return response()->json([
 				'message' => 'Invalid credentials'
-			]);
+			], 401);
 		}
 
 		$user = Auth::user();
