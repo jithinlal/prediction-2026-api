@@ -11,13 +11,11 @@ use App\Http\Resources\V1\TeamResource;
 use App\Models\Team;
 use Illuminate\Http\Request;
 
-class TeamController extends ApiController
-{
+class TeamController extends ApiController {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index(Request $request): TeamCollection
-	{
+	public function index(Request $request): TeamCollection {
 		$filter = new TeamFilter();
 		$query = Team::query();
 
@@ -33,7 +31,7 @@ class TeamController extends ApiController
 		}
 
 		if (count($queryItems) === 0) {
-			return new TeamCollection($query->paginate($perPage));
+			return new TeamCollection($query->orderBy('id')->paginate($perPage));
 		}
 
 		foreach ($queryItems as $item) {
@@ -44,22 +42,20 @@ class TeamController extends ApiController
 			};
 		}
 
-		return new TeamCollection($query->paginate($perPage)->appends($request->query()));
+		return new TeamCollection($query->orderBy('id')->paginate($perPage)->appends($request->query()));
 	}
 
 	/**
 	 * Show the form for creating a new resource.
 	 */
-	public function create()
-	{
+	public function create() {
 		//
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(StoreTeamRequest $request)
-	{
+	public function store(StoreTeamRequest $request) {
 		return response()->json([
 			'message' => 'ok'
 		]);
@@ -68,32 +64,28 @@ class TeamController extends ApiController
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(Team $team): TeamResource
-	{
+	public function show(Team $team): TeamResource {
 		return new TeamResource($team);
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 */
-	public function edit(Team $team)
-	{
+	public function edit(Team $team) {
 		//
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(UpdateTeamRequest $request, Team $team)
-	{
+	public function update(UpdateTeamRequest $request, Team $team) {
 		//
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(Team $team)
-	{
+	public function destroy(Team $team) {
 		//
 	}
 }

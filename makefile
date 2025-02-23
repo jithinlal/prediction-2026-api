@@ -8,9 +8,6 @@ restart:
 	make down
 	make up
 
-dev: # run front end dev environment
-	yarn run dev
-
 migrate-fresh: # clear all tables afresh and run a migration
 	./vendor/bin/sail artisan migrate:fresh
 
@@ -26,4 +23,4 @@ clear:
 	./vendor/bin/sail artisan config:cache
 	./vendor/bin/sail artisan cache:clear
 
-.PHONY: up down dev migrate-fresh migrate-seed
+.PHONY: up down migrate-fresh migrate-seed fresh-seed clear

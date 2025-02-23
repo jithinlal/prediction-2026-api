@@ -28,6 +28,9 @@ class PlayerController extends ApiController {
 
 		$queryItems = $filter->transform($request);
 
+		$perPage = $request->query('pageSize', 23);
+		$perPage = min($perPage, 46);
+
 		$isStar = $request->query('isStar');
 		$isInjured = $request->query('isInjured');
 
@@ -40,7 +43,7 @@ class PlayerController extends ApiController {
 		}
 
 		if (count($queryItems) === 0) {
-			return new PlayerCollection($query->paginate());
+			return new PlayerCollection($query->orderBy('id')->paginate($perPage));
 		}
 
 		foreach ($queryItems as $item) {
@@ -51,7 +54,7 @@ class PlayerController extends ApiController {
 			};
 		}
 
-		return new PlayerCollection($query->paginate()->appends($request->query()));
+		return new PlayerCollection($query->orderBy('id')->paginate($perPage)->appends($request->query()));
 	}
 
 	/**
