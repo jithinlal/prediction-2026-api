@@ -22,6 +22,7 @@ class GameResource extends JsonResource
 			'gameType' => $this->game_type,
 			'date' => $this->date,
 			'stadium' => $this->stadium,
+			'stadiumUrl' => $this->stadium_url,
 			'homeGoals' => $this->home_goals,
 			'awayGoals' => $this->away_goals,
 			'homePenaltyGoals' => $this->home_penalty_goals,

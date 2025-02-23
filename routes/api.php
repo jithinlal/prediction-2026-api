@@ -11,7 +11,6 @@ use App\Http\Controllers\Api\V1\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// TODO :: remove this route
 Route::get('/user', function (Request $request) {
 	return $request->user();
 })->middleware('auth:sanctum');

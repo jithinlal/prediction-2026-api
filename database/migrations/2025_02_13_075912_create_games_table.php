@@ -18,6 +18,7 @@ return new class extends Migration {
 			$table->enum('game_type', ['GROUP', 'ROUND OF 32', 'ROUND OF 16', 'QUARTER FINAL', 'SEMI FINAL', 'LOOSERS FINAL', 'FINAL']);
 			$table->dateTime('date');
 			$table->string('stadium');
+			$table->text('stadium_url');
 			$table->integer('home_goals')->default(0);
 			$table->integer('away_goals')->default(0);
 			$table->integer('home_penalty_goals')->default(0);
