@@ -24,8 +24,11 @@ class GameController extends ApiController {
 
 		$queryItems = $filter->transform($request);
 
+		$perPage = $request->query('pageSize', 10);
+		$perPage = min($perPage, 25);
+
 		if (count($queryItems) === 0) {
-			return new GameCollection($query->paginate());
+			return new GameCollection($query->paginate($perPage));
 		}
 
 		foreach ($queryItems as $item) {
@@ -36,7 +39,7 @@ class GameController extends ApiController {
 			};
 		}
 
-		return new GameCollection($query->paginate()->appends($request->query()));
+		return new GameCollection($query->paginate($perPage)->appends($request->query()));
 	}
 
 	/**

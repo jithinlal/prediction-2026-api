@@ -62,6 +62,7 @@ class GameSeeder extends Seeder
 				'date' => $this->getRandomDateTime($round32Start, $round32End),
 				'stadium' => $stadium['name'],
 				'stadium_url' => $stadium['url'],
+				'is_knockout' => true,
 			]);
 		}
 
@@ -79,6 +80,7 @@ class GameSeeder extends Seeder
 				'date' => $this->getRandomDateTime($round16Start, $round16End),
 				'stadium' => $stadium['name'],
 				'stadium_url' => $stadium['url'],
+				'is_knockout' => true,
 			]);
 		}
 
@@ -96,6 +98,7 @@ class GameSeeder extends Seeder
 				'date' => $this->getRandomDateTime($quarterStart, $quarterEnd),
 				'stadium' => $stadium['name'],
 				'stadium_url' => $stadium['url'],
+				'is_knockout' => true,
 			]);
 		}
 
@@ -113,6 +116,7 @@ class GameSeeder extends Seeder
 				'date' => $this->getRandomDateTime($semiStart, $semiEnd),
 				'stadium' => $stadium['name'],
 				'stadium_url' => $stadium['url'],
+				'is_knockout' => true,
 			]);
 		}
 
@@ -127,6 +131,7 @@ class GameSeeder extends Seeder
 			'date' => $thirdPlaceDate,
 			'stadium' => $stadium['name'],
 			'stadium_url' => $stadium['url'],
+			'is_knockout' => true,
 		]);
 
 		$finalDate = $thirdPlaceDate->copy()->addDays(1);
@@ -139,6 +144,7 @@ class GameSeeder extends Seeder
 			'date' => $finalDate,
 			'stadium' => $stadium['name'],
 			'stadium_url' => $stadium['url'],
+			'is_knockout' => true,
 		]);
 	}
 }
