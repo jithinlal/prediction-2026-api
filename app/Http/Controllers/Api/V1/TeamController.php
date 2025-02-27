@@ -22,7 +22,7 @@ class TeamController extends ApiController {
 		$queryItems = $filter->transform($request);
 
 		$perPage = $request->query('pageSize', 8);
-		$perPage = min($perPage, 24);
+		$perPage = min($perPage, 48);
 
 		$includePlayers = $request->query('players');
 
