@@ -28,10 +28,22 @@ class GameController extends ApiController {
 		$perPage = min($perPage, 25);
 
 		if (count($queryItems) === 0) {
-			return new GameCollection($query->paginate($perPage));
+			return new GameCollection($query->orderBy('date')->paginate($perPage));
 		}
 
+		$teamFilters = [];
+		$regularFilters = [];
+
+		// checking by team_id should be done on both home side and away side, so a separate filter
 		foreach ($queryItems as $item) {
+			if (in_array($item[0], ['home_team_id', 'away_team_id'])) {
+				$teamFilters[] = $item;
+			} else {
+				$regularFilters[] = $item;
+			}
+		}
+
+		foreach ($regularFilters as $item) {
 			$query = match ($item[1]) {
 				'LIKE' => $query->where($item[0], 'LIKE', $item[2]),
 				'IN' => $query->whereIn($item[0], $item[2]),
@@ -39,7 +51,27 @@ class GameController extends ApiController {
 			};
 		}
 
-		return new GameCollection($query->paginate($perPage)->appends($request->query()));
+		if (!empty($teamFilters)) {
+			 $query->where(function ($q) use ($teamFilters) {
+				 foreach ($teamFilters as $index => $item) {
+					 if ($index === 0) {
+						 $q = match ($item[1]) {
+							 'LIKE' => $q->where($item[0], 'LIKE', $item[2]),
+							 'IN' => $q->whereIn($item[0], $item[2]),
+							 default => $q->where($item[0], $item[1], $item[2])
+						 };
+					 } else {
+						 $q = match ($item[1]) {
+							 'LIKE' => $q->orWhere($item[0], 'LIKE', $item[2]),
+							 'IN' => $q->orWhereIn($item[0], $item[2]),
+							 default => $q->orWhere($item[0], $item[1], $item[2])
+						 };
+					 }
+				 }
+			 });
+		}
+
+		return new GameCollection($query->orderBy('date')->paginate($perPage)->appends($request->query()));
 	}
 
 	/**
