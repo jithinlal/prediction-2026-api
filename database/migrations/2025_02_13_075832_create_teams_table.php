@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->integer('rank');
             $table->integer('world_cups')->default(0);
             $table->string('manager_name');
+						$table->boolean('is_eliminated')->default(false);
             $table->timestamps();
         });
     }
