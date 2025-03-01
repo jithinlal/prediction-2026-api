@@ -2,13 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Http\Services\V1\SupabaseService;
 use App\Models\Game;
 use App\Models\Group;
 use App\Models\Stadium;
 use Carbon\Carbon;
 use Database\Factories\GameFactory;
-use DateTime;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class GameSeeder extends Seeder
@@ -24,6 +23,18 @@ class GameSeeder extends Seeder
 	 */
 	public function run(): void
 	{
+		$stadiums = [];
+		foreach (Stadium::stadiums() as $stadium) {
+			$stadiums[] = ['name' => $stadium['name']];
+		}
+
+		$supabase = new SupabaseService();
+
+		foreach ($stadiums as $index => $stadium) {
+			$url = $supabase->getSignedUrl($stadium['name'].'.png');
+			$stadiums[$index]['url'] = $url;
+		}
+
 		$gameFactory = new GameFactory();
 		$groups = Group::all()->pluck('id')->toArray();
 
@@ -34,7 +45,7 @@ class GameSeeder extends Seeder
 			$games = $gameFactory->generateMatches($group);
 
 			foreach ($games as $game) {
-				$stadium = Stadium::stadiums()[random_int(0, 15)];
+				$stadium = $stadiums[random_int(0, 15)];
 
 				Game::create([
 					'home_team_id' => $game['home_team_id'],
@@ -53,7 +64,7 @@ class GameSeeder extends Seeder
 
 		$last32 = $gameFactory->generateKnockouts(32);
 		foreach ($last32['matches'] as $knockoutGame) {
-			$stadium = Stadium::stadiums()[random_int(0, 15)];
+			$stadium = $stadiums[random_int(0, 15)];
 
 			Game::create([
 				'home_team_id' => $knockoutGame['home_team_id'],
@@ -71,7 +82,7 @@ class GameSeeder extends Seeder
 
 		$last16 = $gameFactory->generateKnockouts(16, $last32['knockout_teams']);
 		foreach ($last16['matches'] as $knockoutGame) {
-			$stadium = Stadium::stadiums()[random_int(0, 15)];
+			$stadium = $stadiums[random_int(0, 15)];
 
 			Game::create([
 				'home_team_id' => $knockoutGame['home_team_id'],
@@ -89,7 +100,7 @@ class GameSeeder extends Seeder
 
 		$last8 = $gameFactory->generateKnockouts(8, $last16['knockout_teams']);
 		foreach ($last8['matches'] as $knockoutGame) {
-			$stadium = Stadium::stadiums()[random_int(0, 15)];
+			$stadium = $stadiums[random_int(0, 15)];
 
 			Game::create([
 				'home_team_id' => $knockoutGame['home_team_id'],
@@ -107,7 +118,7 @@ class GameSeeder extends Seeder
 
 		$last4 = $gameFactory->generateKnockouts(4, $last8['knockout_teams']);
 		foreach ($last4['matches'] as $knockoutGame) {
-			$stadium = Stadium::stadiums()[random_int(0, 15)];
+			$stadium = $stadiums[random_int(0, 15)];
 
 			Game::create([
 				'home_team_id' => $knockoutGame['home_team_id'],
@@ -122,7 +133,7 @@ class GameSeeder extends Seeder
 
 		$thirdPlaceDate = $semiEnd->copy()->addDays(3);
 
-		$stadium = Stadium::stadiums()[random_int(0, 15)];
+		$stadium = $stadiums[random_int(0, 15)];
 
 		Game::create([
 			'home_team_id' => $last4['matches'][0]['home_team_id'],
@@ -135,7 +146,7 @@ class GameSeeder extends Seeder
 		]);
 
 		$finalDate = $thirdPlaceDate->copy()->addDays(1);
-		$stadium = Stadium::stadiums()[random_int(0, 15)];
+		$stadium = $stadiums[random_int(0, 15)];
 
 		Game::create([
 			'home_team_id' => $last4['matches'][0]['away_team_id'],
