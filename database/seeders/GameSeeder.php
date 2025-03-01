@@ -31,7 +31,7 @@ class GameSeeder extends Seeder
 		$supabase = new SupabaseService();
 
 		foreach ($stadiums as $index => $stadium) {
-			$url = $supabase->getSignedUrl($stadium['name'].'.png');
+			$url = $supabase->getSignedUrl('stadiums',$stadium['name'].'.png');
 			$stadiums[$index]['url'] = $url;
 		}
 

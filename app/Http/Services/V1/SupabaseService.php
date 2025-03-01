@@ -25,12 +25,12 @@ class SupabaseService
 	 * @throws ConnectionException
 	 * @throws Exception
 	 */
-	public function getSignedUrl($fileName): string
+	public function getSignedUrl($folderName, $fileName): string
 	{
 		$response = Http::withHeaders([
 			'Authorization' => 'Bearer ' . $this->key,
 		])
-			->post("$this->url/storage/v1/object/sign/$this->bucket/$fileName", [
+			->post("$this->url/storage/v1/object/sign/$this->bucket/$folderName/$fileName", [
 				"expiresIn" => 999 * self::SECONDS_IN_DAY,
 				// "transform" => [
 				//   "height" => 100,
