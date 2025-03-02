@@ -11,8 +11,8 @@ class AuthService
 {
 	public function generateTokens($user): array
 	{
-		$atExpireTime = now()->addMinutes(config('sanctum.expiration'));
-		$rtExpireTime = now()->addMinutes(config('sanctum.rt_expiration'));
+		$atExpireTime = now()->addMinutes((int)config('sanctum.expiration'));
+		$rtExpireTime = now()->addMinutes((int)config('session.rt_expiration'));
 
 		$accessToken = $user->createToken('access_token', [TokenAbility::ACCESS_API], $atExpireTime);
 		$refreshToken = $user->createToken('refresh_token', [TokenAbility::ISSUE_ACCESS_TOKEN], $rtExpireTime);
