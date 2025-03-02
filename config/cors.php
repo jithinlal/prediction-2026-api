@@ -19,7 +19,7 @@ return [
 
 	'allowed_methods' => ['*'],
 
-	'allowed_origins' => ['http://localhost:3039', 'http://localhost', 'https://predict.loclx.io', 'https://predictapi.loclx.io'],
+	'allowed_origins' => ['http://localhost:3039', 'http://localhost', 'https://jithin.loclx.io', 'https://jithinapi.loclx.io'],
 
 	'allowed_origins_patterns' => [],
 
