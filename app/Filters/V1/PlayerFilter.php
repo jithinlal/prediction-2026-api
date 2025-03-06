@@ -9,7 +9,7 @@ class PlayerFilter extends ApiFilter
 {
 	protected array $safeParams = [
 		'name' => ['eq', 'like'],
-		'team' => ['eq'],
+		'teams' => ['eq', 'in'],
 		'isStar' => ['eq'],
 		'position' => ['eq', 'in'],
 		'goals' => ['eq', 'lt', 'gt'],
@@ -19,7 +19,7 @@ class PlayerFilter extends ApiFilter
 
 	protected array $columnMap = [
 		'name' => 'name',
-		'team' => 'team_id',
+		'teams' => 'team_id',
 		'isStar' => 'is_star',
 		'position' => 'position',
 		'goals' => 'goals',

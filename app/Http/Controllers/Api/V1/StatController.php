@@ -9,6 +9,8 @@ use App\Http\Requests\V1\UpdateStatRequest;
 use App\Http\Resources\V1\StatCollection;
 use App\Http\Resources\V1\StatResource;
 use App\Models\Stat;
+use App\Models\StatType;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class StatController extends ApiController {
@@ -79,5 +81,12 @@ class StatController extends ApiController {
 	 */
 	public function destroy(Stat $stat) {
 		//
+	}
+
+	public function fetchTypes(): JsonResponse
+	{
+		return response()->json([
+			'data' => StatType::getTypes(),
+		]);
 	}
 }
