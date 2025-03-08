@@ -17,12 +17,9 @@ return new class extends Migration {
             $table->foreignId('player_id')->constrained('players')->cascadeOnDelete();
             $table->enum('type', [
 							StatTypeEnum::GOAL,
-							StatTypeEnum::ASSIST,
 							StatTypeEnum::YELLOW_CARD,
 							StatTypeEnum::RED_CARD,
-							StatTypeEnum::OWN_GOAL,
 							StatTypeEnum::CLEAN_SHEET,
-							StatTypeEnum::HAT_TRICK,
 						]);
             $table->timestamps();
         });
