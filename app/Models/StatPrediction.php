@@ -11,6 +11,14 @@ class StatPrediction extends Model
 	/** @use HasFactory<\Database\Factories\StatPredictionFactory> */
 	use HasFactory;
 
+	protected $fillable = [
+		'user_id',
+		'game_id',
+		'player_id',
+		'type',
+		'points',
+	];
+
 	public function user(): BelongsTo
 	{
 		return $this->belongsTo(User::class);

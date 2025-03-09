@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\StatPredictionFilter;
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\StoreStatPredictionRequest;
 use App\Http\Requests\UpdateStatPredictionRequest;
-use App\Http\Resources\v1\StatPredictionCollection;
-use App\Http\Resources\v1\StatPredictionResource;
+use App\Http\Requests\V1\StoreStatPredictionRequest;
+use App\Http\Resources\V1\StatPredictionCollection;
+use App\Http\Resources\V1\StatPredictionResource;
 use App\Models\StatPrediction;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class StatPredictionController extends ApiController {
@@ -50,8 +52,35 @@ class StatPredictionController extends ApiController {
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(StoreStatPredictionRequest $request) {
-		//
+	public function store(StoreStatPredictionRequest $request): StatPredictionResource|JsonResponse
+	{
+		try {
+			$predictionsCount = StatPrediction::where('user_id', auth()->id())
+				->where('game_id', $request->game)
+				->count();
+
+			if ($predictionsCount >= 3) {
+				return response()->json([
+					'message' => 'You can only make 3 predictions per game'
+				], 422);
+			}
+
+			$statPrediction = StatPrediction::create([
+				'user_id' => auth()->id(),
+				'game_id' => $request->game,
+				'player_id' => $request->player,
+				'type' => $request->type
+			]);
+
+			$statPrediction->load([
+				'game',
+				'player',
+			]);
+
+			return new StatPredictionResource($statPrediction);
+		} catch (Exception) {
+			return $this->errorResponse('Failed to create stat prediction', 500);
+		}
 	}
 
 	/**
