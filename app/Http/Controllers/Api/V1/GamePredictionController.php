@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Filters\V1\GamePredictionFilter;
 use App\Http\Controllers\ApiController;
-use App\Http\Requests\StoreGamePredictionRequest;
 use App\Http\Requests\UpdateGamePredictionRequest;
-use App\Http\Resources\v1\GamePredictionCollection;
-use App\Http\Resources\v1\GamePredictionResource;
+use App\Http\Requests\V1\StoreGamePredictionRequest;
+use App\Http\Resources\V1\GamePredictionCollection;
+use App\Http\Resources\V1\GamePredictionResource;
+use App\Models\Game;
 use App\Models\GamePrediction;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class GamePredictionController extends ApiController {
 	/**
@@ -49,8 +52,25 @@ class GamePredictionController extends ApiController {
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(StoreGamePredictionRequest $request) {
-		//
+	public function store(StoreGamePredictionRequest $request): JsonResponse
+	{
+		$filtered = Arr::except($request->all(), [
+			'game',
+			'homeGoals',
+			'awayGoals',
+			'homePenaltyGoals',
+			'awayPenaltyGoals'
+		]);
+
+		$game = Game::find($filtered['game_id']);
+
+		if ($game->is_knockout && ($filtered['home_penalty_goals'] === $filtered['away_penalty_goals'])) {
+				return response()->json([
+					'message' => 'Since this is a knockout game, you need to have different goals for home and away team in penalty shootout'
+				], 400);
+		}
+
+		return response()->json(new GamePredictionResource(GamePrediction::create($filtered)));
 	}
 
 	/**

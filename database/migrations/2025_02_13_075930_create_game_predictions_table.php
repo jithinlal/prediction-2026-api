@@ -16,10 +16,12 @@ return new class extends Migration {
             $table->foreignId('game_id')->constrained('games')->cascadeOnDelete();
             $table->integer('home_goals');
             $table->integer('away_goals');
-            $table->integer('home_penalty_goals');
-            $table->integer('away_penalty_goals');
+            $table->integer('home_penalty_goals')->default(0)->nullable();
+            $table->integer('away_penalty_goals')->default(0)->nullable();
             $table->integer('points')->default(0);
             $table->timestamps();
+
+						$table->unique(['user_id', 'game_id'], 'game_predictions_unique_combination');
         });
     }
 
@@ -28,6 +30,9 @@ return new class extends Migration {
      */
     public function down(): void
     {
+			Schema::table('game_predictions', function (Blueprint $table) {
+				$table->dropUnique('game_predictions_unique_combination');
+			});
         Schema::dropIfExists('game_predictions');
     }
 };
