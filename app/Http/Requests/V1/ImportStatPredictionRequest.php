@@ -54,6 +54,8 @@ class ImportStatPredictionRequest extends FormRequest
 			$obj['player_id'] = $obj['player'] ?? null;
 			$obj['type'] = $obj['type'] ?? null;
 			$obj['user_id'] = $this->user()?->id;
+			$obj['created_at'] = now();
+			$obj['updated_at'] = now();
 
 			$data[] = $obj;
 		}

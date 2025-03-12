@@ -47,6 +47,8 @@ class ImportPlayerRequest extends FormRequest
 			$obj['assists'] = $obj['assists'] ?? 0;
 			$obj['isStar'] = $obj['isStar'] ?? false;
 			$obj['isInjured'] = $obj['isInjured'] ?? false;
+			$obj['created_at'] = now();
+			$obj['updated_at'] = now();
 
 			$data[]	= $obj;
 		}
