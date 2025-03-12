@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Filters\V1\StatPredictionFilter;
 use App\Http\Controllers\ApiController;
 use App\Http\Requests\UpdateStatPredictionRequest;
+use App\Http\Requests\V1\ImportStatPredictionRequest;
 use App\Http\Requests\V1\StoreStatPredictionRequest;
 use App\Http\Resources\V1\StatPredictionCollection;
 use App\Http\Resources\V1\StatPredictionResource;
@@ -12,6 +13,7 @@ use App\Models\StatPrediction;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class StatPredictionController extends ApiController {
 	/**
@@ -81,6 +83,14 @@ class StatPredictionController extends ApiController {
 		} catch (Exception) {
 			return $this->errorResponse('Failed to create stat prediction', 500);
 		}
+	}
+
+	public function import(ImportStatPredictionRequest $request): void {
+		$bulk = collect($request->all())->map(function ($arr, $key) {
+			return Arr::except($arr, ['game', 'player']);
+		});
+
+		StatPrediction::insert($bulk->toArray());
 	}
 
 	/**

@@ -35,6 +35,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1', 'm
 	Route::apiResource('gamePredictions', GamePredictionController::class);
 
 	Route::post('players/import', [PlayerController::class, 'import']);
+	Route::post('statPredictions/import', [StatPredictionController::class, 'import']);
 
 	Route::get('statTypes', [StatController::class, 'fetchTypes']);
 })->middleware('auth:sanctum');
