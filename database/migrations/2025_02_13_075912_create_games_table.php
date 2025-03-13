@@ -27,6 +27,7 @@ return new class extends Migration {
 			$table->boolean('is_winner_bonus')->default(false);
 			$table->boolean('is_score_bonus')->default(false);
 			$table->timestamps();
+			$table->softDeletes();
 		});
 	}
 

@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 
 class TeamSeeder extends Seeder
@@ -18,46 +19,52 @@ class TeamSeeder extends Seeder
 	public function run(): void
 	{
 		$continents = ['Europe', 'South America', 'North America', 'Africa', 'Asia', 'Oceania'];
+		$jsonContent = base_path('database/seeders/countries.json');
+		$countries = json_decode(File::get($jsonContent), true);
 
 		$groups = Group::all();
 
+		$availableRanks = range(1, 100);
+		shuffle($availableRanks);
+		$usedCountries = [];
+		$count = 0;
+
 		foreach ($groups as $group) {
 			for ($i = 0; $i < 4; $i++) {
-				$countryCode = fake()->unique()->countryCode;
-				$name = '';
-				$attempt = 1;
+				if ($count === 48) {
+					return;
+				}
 
 				while (true) {
 					try {
-						$response = Http::get("https://restcountries.com/v3.1/alpha/$countryCode");
-						$countryData = $response->json();
+						$country = fake()->randomElement($countries);
 
-						if (!empty($countryData[0]['name'])) {
-							$name = $countryData[0]['name']['common'] ?? '';
-						} else {
-							break;
+						$countryName = $country['name']['common'] ?? '';
+						$rank = $availableRanks[$count];
+
+						if (in_array($countryName, $usedCountries)) {
+							continue;
 						}
 
-						logger()->info("Creating team: $name");
+						logger()->info("Creating team: $countryName");
 
 						Team::create([
-							'name' => $name,
+							'name' => $countryName,
 							'group_id' => $group->id,
-							'continent' => $countryData[0]['continents'][0] ?? fake()->randomElement($continents),
-							'image' => "https://flagsapi.com/$countryCode/flat/64.png",
-							'rank' => fake()->unique()->numberBetween(1, 48),
+							'continent' => $country['continents'][0] ?? fake()->randomElement($continents),
+							'image' => $country['flags']['png'] ?? '',
+							'rank' => $rank,
 							'world_cups' => fake()->numberBetween(0, 5),
 							'manager_name' => fake()->name,
 						]);
 
+						$usedCountries[] = $countryName;
+						$count++;
+
 						break;
 					} catch (QueryException $e) {
-						$attempt++;
-
-						if ($attempt > 10) {
-							throw new Exception("Failed to create team after 10 attempts: $name");
-						}
-						continue;
+						logger()->error("Failed to create team: $countryName - " . $e->getMessage());
+						throw new Exception("Failed to create team: $countryName - " . $e->getMessage());
 					}
 				}
 			}

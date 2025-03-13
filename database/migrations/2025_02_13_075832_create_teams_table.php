@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->string('manager_name');
 						$table->boolean('is_eliminated')->default(false);
             $table->timestamps();
+						$table->softDeletes();
         });
     }
 

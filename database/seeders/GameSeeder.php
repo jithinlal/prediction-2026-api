@@ -25,13 +25,18 @@ class GameSeeder extends Seeder
 	{
 		$stadiums = [];
 		foreach (Stadium::stadiums() as $stadium) {
-			$stadiums[] = ['name' => $stadium['name']];
+			$stadiums[] = ['name' => $stadium['name'], 'key' => $stadium['key'], 'url' => $stadium['url']];
 		}
 
 		$supabase = new SupabaseService();
 
 		foreach ($stadiums as $index => $stadium) {
-			$url = $supabase->getSignedUrl('stadiums',$stadium['name'].'.png');
+			sleep(1);
+			try {
+				$url = $supabase->getSignedUrl('stadiums',$stadium['key'].'.png');
+			} catch (\Exception $e) {
+				$url = $stadium['url'];
+			}
 			$stadiums[$index]['url'] = $url;
 		}
 

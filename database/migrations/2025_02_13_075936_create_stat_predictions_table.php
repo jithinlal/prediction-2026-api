@@ -24,6 +24,7 @@ return new class extends Migration {
 						]);
             $table->integer('points')->default(0);
             $table->timestamps();
+						$table->softDeletes();
 
 						$table->unique(['user_id', 'game_id', 'player_id', 'type'], 'stat_predictions_unique_combination');
         });

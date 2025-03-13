@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->integer('assists')->default(0);
             $table->boolean('is_injured')->default(false);
             $table->timestamps();
+						$table->softDeletes();
         });
     }
 

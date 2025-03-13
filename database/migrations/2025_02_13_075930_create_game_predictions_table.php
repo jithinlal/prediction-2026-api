@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->integer('away_penalty_goals')->default(0)->nullable();
             $table->integer('points')->default(0);
             $table->timestamps();
+						$table->softDeletes();
 
 						$table->unique(['user_id', 'game_id'], 'game_predictions_unique_combination');
         });

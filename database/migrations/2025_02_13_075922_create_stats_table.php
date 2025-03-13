@@ -13,7 +13,7 @@ return new class extends Migration {
     {
         Schema::create('stats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('game_id')->constrained('games')->cascadeOnDelete();
+						$table->foreignId('game_id')->constrained('games')->cascadeOnDelete();
             $table->foreignId('player_id')->constrained('players')->cascadeOnDelete();
             $table->enum('type', [
 							StatTypeEnum::GOAL->value,
@@ -22,6 +22,7 @@ return new class extends Migration {
 							StatTypeEnum::CLEAN_SHEET->value,
 						]);
             $table->timestamps();
+						$table->softDeletes();
         });
     }
 
