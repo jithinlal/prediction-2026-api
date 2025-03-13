@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->timestamps();
 						$table->softDeletes();
 
-						$table->unique(['user_id', 'game_id'], 'game_predictions_unique_combination');
+						$table->unique(['user_id', 'game_id', 'deleted_at'], 'game_predictions_unique_combination');
         });
     }
 

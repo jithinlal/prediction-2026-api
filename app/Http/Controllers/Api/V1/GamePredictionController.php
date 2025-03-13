@@ -70,6 +70,22 @@ class GamePredictionController extends ApiController {
 				], 400);
 		}
 
+		$gamePrediction = GamePrediction::where('user_id', $filtered['user_id'])
+			->where('game_id', $filtered['game_id'])
+			->first();
+
+		if ($gamePrediction->home_goals === $filtered['home_goals'] &&
+			$gamePrediction->away_goals === $filtered['away_goals'] &&
+			$gamePrediction->home_penalty_goals === $filtered['home_penalty_goals'] &&
+			$gamePrediction->away_penalty_goals === $filtered['away_penalty_goals']
+		) {
+			return response()->json(new GamePredictionResource($gamePrediction));
+		}
+
+		if ($gamePrediction) {
+			$gamePrediction->delete();
+		}
+
 		return response()->json(new GamePredictionResource(GamePrediction::create($filtered)));
 	}
 

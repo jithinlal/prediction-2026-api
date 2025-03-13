@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->timestamps();
 						$table->softDeletes();
 
-						$table->unique(['user_id', 'game_id', 'player_id', 'type'], 'stat_predictions_unique_combination');
+						$table->unique(['user_id', 'game_id', 'player_id', 'type', 'deleted_at'], 'stat_predictions_unique_combination');
         });
     }
 

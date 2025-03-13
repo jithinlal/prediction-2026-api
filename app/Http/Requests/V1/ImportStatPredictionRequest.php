@@ -23,35 +23,17 @@ class ImportStatPredictionRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'*.game' => 'required|exists:games,id',
-			'*.player' => [
+			'*.game' => [
 				'required',
-				'exists:players,id',
+				'exists:games,id',
 				function ($attribute, $value, $fail) {
-					$index = explode('.', $attribute)[0];
-					$exists = StatPrediction::where('player_id', $value)
-						->where('game_id', $this->input($index . '.game'))
-						->where('type', $this->input($index . '.type'))
-						->where('user_id', $this->user()?->id)
-						->exists();
-
-					if ($exists) {
-						$fail('You have already made a prediction for this player in this game with the same type.');
+					$firstGameId = $this->input('0.game');
+					if ($value !== $firstGameId) {
+						$fail('All predictions must be for the same game.');
 					}
-				},
-				function ($attribute, $value, $fail) {
-					$index = explode('.', $attribute)[0];
-					$count = StatPrediction::where('game_id', $this->input($index . '.game'))
-						->where('user_id', $this->user()?->id)
-						->count();
-
-					$statPredictionCount = (int)env('STAT_PREDICTION_COUNT');
-
-					if ($count >= $statPredictionCount) {
-						$fail("You can only make $statPredictionCount predictions per game");
-					}
-				},
+				}
 			],
+			'*.player' => 'required|exists:players,id',
 			'*.type' => 'required|in:goal,yellow_card,red_card,clean_sheet'
 		];
 	}

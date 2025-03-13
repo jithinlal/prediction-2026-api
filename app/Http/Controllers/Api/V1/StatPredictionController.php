@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class StatPredictionController extends ApiController {
 	/**
@@ -88,11 +89,33 @@ class StatPredictionController extends ApiController {
 	}
 
 	public function import(ImportStatPredictionRequest $request): void {
-		$bulk = collect($request->all())->map(function ($arr, $key) {
-			return Arr::except($arr, ['game', 'player']);
-		});
+		DB::transaction(function () use ($request) {
+			$bulkData = collect($request->all());
 
-		StatPrediction::insert($bulk->toArray());
+			if ($bulkData->isEmpty()) {
+				return;
+			}
+
+			$gameId = $bulkData->first()['game_id'];
+
+			StatPrediction::where('user_id', auth()->id())
+				->where('game_id', $gameId)
+				->delete();
+
+			$bulk = $bulkData->map(function ($arr, $key) {
+				return Arr::except($arr, ['game', 'player']);
+			});
+
+			$statPredictionCount = (int)env('STAT_PREDICTION_COUNT');
+
+			if ($bulk->count() > $statPredictionCount) {
+				return response()->json([
+					'message' => "You can only make $statPredictionCount predictions per game"
+				], 400);
+			}
+
+			StatPrediction::insert($bulk->toArray());
+		});
 	}
 
 	/**

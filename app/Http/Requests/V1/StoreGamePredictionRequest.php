@@ -23,19 +23,7 @@ class StoreGamePredictionRequest extends FormRequest
     public function rules(): array
     {
         return [
-					'game' => [
-						'required',
-						'exists:games,id',
-						function ($attribute, $value, $fail) {
-							$userId = $this->user()?->id;
-
-							if (GamePrediction::where('game_id', $value)
-								->where('user_id', $userId)
-								->exists()) {
-								$fail('You have already predicted this game.');
-							}
-						}
-					],
+					'game' => 'required|exists:games,id',
 					'homeGoals' => 'required|integer|min:0',
 					'awayGoals' => 'required|integer|min:0',
 					'homePenaltyGoals' => 'nullable|integer|min:0',
