@@ -61,9 +61,11 @@ class StatPredictionController extends ApiController {
 				->where('game_id', $request->game)
 				->count();
 
-			if ($predictionsCount >= 3) {
+			$statPredictionCount = (int)env('STAT_PREDICTION_COUNT');
+
+			if ($predictionsCount >= $statPredictionCount) {
 				return response()->json([
-					'message' => 'You can only make 3 predictions per game'
+					'message' => "You can only make $statPredictionCount predictions per game"
 				], 422);
 			}
 
