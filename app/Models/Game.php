@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Game extends Model
@@ -34,8 +35,13 @@ class Game extends Model
 		return $this->hasMany(Stat::class);
 	}
 
-	public function predictions(): HasMany
+	public function prediction(): HasOne
 	{
-		return $this->hasMany(GamePrediction::class);
+		return $this->hasOne(GamePrediction::class);
+	}
+
+	public function statPredictions(): HasMany
+	{
+		return $this->hasMany(StatPrediction::class);
 	}
 }

@@ -28,6 +28,12 @@ class GameResource extends JsonResource
 			'homePenaltyGoals' => $this->home_penalty_goals,
 			'awayPenaltyGoals' => $this->away_penalty_goals,
 			'isKnockout' => $this->is_knockout,
+			'prediction' => $this->when($this->whenLoaded('prediction'), function () {
+				return new GamePredictionResource($this->prediction);
+			}),
+			'statPredictions' => $this->when($this->whenLoaded('statPredictions'), function () {
+				return new StatPredictionCollection($this->statPredictions);
+			}),
 		];
 	}
 }

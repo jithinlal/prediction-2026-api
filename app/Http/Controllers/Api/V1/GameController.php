@@ -21,6 +21,8 @@ class GameController extends ApiController {
 
 		$query = $query->with('homeTeam');
 		$query = $query->with('awayTeam');
+		$query = $query->with('prediction');
+		$query = $query->with('statPredictions');
 
 		$queryItems = $filter->transform($request);
 
