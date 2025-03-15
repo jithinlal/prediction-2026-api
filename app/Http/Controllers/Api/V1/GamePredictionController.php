@@ -99,7 +99,9 @@ class GamePredictionController extends ApiController {
 			->first();
 
 		if (!$gamePrediction) {
-			return response()->json(['message' => 'Game prediction not found'], 404);
+			return response()->json([
+				'data' => [],
+			]);
 		}
 
 		return new GamePredictionResource($gamePrediction);

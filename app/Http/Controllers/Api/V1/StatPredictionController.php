@@ -129,7 +129,7 @@ class StatPredictionController extends ApiController {
 		$statPredictions->with('player');
 
 		if ($statPredictions->count() === 0) {
-			return response()->json(['message' => 'Stat predictions not found'], 404);
+			return response()->json(['data' => []]);
 		}
 
 		return new StatPredictionCollection($statPredictions->get());
