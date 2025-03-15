@@ -74,7 +74,8 @@ class GamePredictionController extends ApiController {
 			->where('game_id', $filtered['game_id'])
 			->first();
 
-		if ($gamePrediction->home_goals === $filtered['home_goals'] &&
+		if (!is_null($gamePrediction) &&
+			$gamePrediction->home_goals === $filtered['home_goals'] &&
 			$gamePrediction->away_goals === $filtered['away_goals'] &&
 			$gamePrediction->home_penalty_goals === $filtered['home_penalty_goals'] &&
 			$gamePrediction->away_penalty_goals === $filtered['away_penalty_goals']

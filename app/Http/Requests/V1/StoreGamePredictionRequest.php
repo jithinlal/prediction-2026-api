@@ -35,11 +35,11 @@ class StoreGamePredictionRequest extends FormRequest
 		{
 			$this->merge([
 				'game_id' => $this->game ?? null,
-				'home_goals' => $this->homeGoals ?? null,
-				'away_goals' => $this->awayGoals ?? null,
+				'home_goals' => $this->homeGoals ?? 0,
+				'away_goals' => $this->awayGoals ?? 0,
 				'user_id' => $this->user()?->id,
-				'home_penalty_goals' => $this->homePenaltyGoals ?? null,
-				'away_penalty_goals' => $this->awayPenaltyGoals ?? null,
+				'home_penalty_goals' => $this->homePenaltyGoals ?? 0,
+				'away_penalty_goals' => $this->awayPenaltyGoals ?? 0,
 			]);
 		}
 }
