@@ -121,8 +121,18 @@ class StatPredictionController extends ApiController {
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(StatPrediction $statPrediction): StatPredictionResource {
-		return new StatPredictionResource($statPrediction);
+	public function show(int $gameId): JsonResponse|StatPredictionCollection
+	{
+		$statPredictions = StatPrediction::where('game_id', $gameId)
+			->where('user_id', auth()->id());
+
+		$statPredictions->with('player');
+
+		if ($statPredictions->count() === 0) {
+			return response()->json(['message' => 'Stat predictions not found'], 404);
+		}
+
+		return new StatPredictionCollection($statPredictions->get());
 	}
 
 	/**

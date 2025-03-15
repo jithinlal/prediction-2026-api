@@ -92,8 +92,18 @@ class GamePredictionController extends ApiController {
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(GamePrediction $gamePrediction): GamePredictionResource {
+	public function show(int $gameId): JsonResponse|GamePredictionResource
+	{
+		$gamePrediction = GamePrediction::where('game_id', $gameId)
+			->where('user_id', auth()->id())
+			->first();
+
+		if (!$gamePrediction) {
+			return response()->json(['message' => 'Game prediction not found'], 404);
+		}
+
 		return new GamePredictionResource($gamePrediction);
+
 	}
 
 	/**
