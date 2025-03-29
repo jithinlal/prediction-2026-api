@@ -36,7 +36,7 @@ class StatPredictionController extends ApiController {
 
 		foreach ($queryItems as $item) {
 			$query = match ($item[1]) {
-				'LIKE' => $query->where($item[0], 'LIKE', $item[2]),
+				'LIKE' => $query->whereRaw("LOWER($item[0]) LIKE ?", ['%' . strtolower($item[2]) . '%']),
 				'IN' => $query->whereIn($item[0], $item[2]),
 				default => $query->where($item[0], $item[1], $item[2])
 			};

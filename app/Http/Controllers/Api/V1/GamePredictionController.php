@@ -23,7 +23,9 @@ class GamePredictionController extends ApiController {
 		$query = GamePrediction::query();
 
 		$query = $query->with('user');
-		$query = $query->with('game');
+		$query = $query->with('game')
+			->with('game.homeTeam')
+			->with('game.awayTeam');
 
 		$queryItems = $filter->transform($request);
 
@@ -33,7 +35,7 @@ class GamePredictionController extends ApiController {
 
 		foreach ($queryItems as $item) {
 			$query = match ($item[1]) {
-				'LIKE' => $query->where($item[0], 'LIKE', $item[2]),
+				'LIKE' => $query->whereRaw("LOWER($item[0]) LIKE ?", ['%' . strtolower($item[2]) . '%']),
 				'IN' => $query->whereIn($item[0], $item[2]),
 				default => $query->where($item[0], $item[1], $item[2])
 			};
