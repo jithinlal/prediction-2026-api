@@ -27,10 +27,15 @@ class GamePredictionController extends ApiController {
 			->with('game.homeTeam')
 			->with('game.awayTeam');
 
+		$query = $query->where('user_id', auth()->id());
+
 		$queryItems = $filter->transform($request);
 
+		$perPage = $request->query('pageSize', 10);
+		$perPage = min($perPage, 25);
+
 		if (count($queryItems) === 0) {
-			return new GamePredictionCollection($query->paginate());
+			return new GamePredictionCollection($query->orderBy('created_at', 'desc')->paginate($perPage));
 		}
 
 		foreach ($queryItems as $item) {
@@ -41,7 +46,7 @@ class GamePredictionController extends ApiController {
 			};
 		}
 
-		return new GamePredictionCollection($query->paginate()->appends($request->query()));
+		return new GamePredictionCollection($query->orderBy('created_at', 'desc')->paginate($perPage)->appends($request->query()));
 	}
 
 	/**

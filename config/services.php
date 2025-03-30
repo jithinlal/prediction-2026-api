@@ -40,4 +40,8 @@ return [
 			'key' => env('SUPABASE_KEY'),
 			'bucket' => env('SUPABASE_BUCKET'),
 		],
+
+		'app' => [
+			'stat_prediction_count' => env('STAT_PREDICTION_COUNT', 3)
+		],
 ];

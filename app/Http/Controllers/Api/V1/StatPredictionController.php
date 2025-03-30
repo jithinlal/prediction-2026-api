@@ -28,10 +28,15 @@ class StatPredictionController extends ApiController {
 		$query = $query->with('game');
 		$query = $query->with('player');
 
+		$query = $query->where('user_id', auth()->id());
+
 		$queryItems = $filter->transform($request);
 
+		$perPage = $request->query('pageSize', 10);
+		$perPage = min($perPage, 25);
+
 		if (count($queryItems) === 0) {
-			return new StatPredictionCollection($query->paginate());
+			return new StatPredictionCollection($query->orderBy('created_at', 'desc')->paginate($perPage));
 		}
 
 		foreach ($queryItems as $item) {
@@ -42,7 +47,7 @@ class StatPredictionController extends ApiController {
 			};
 		}
 
-		return new StatPredictionCollection($query->paginate()->appends($request->query()));
+		return new StatPredictionCollection($query->orderBy('created_at', 'desc')->paginate($perPage)->appends($request->query()));
 	}
 
 	/**
@@ -106,7 +111,7 @@ class StatPredictionController extends ApiController {
 				return Arr::except($arr, ['game', 'player']);
 			});
 
-			$statPredictionCount = (int)env('STAT_PREDICTION_COUNT');
+			$statPredictionCount = (int)config('services.app.stat_prediction_count');
 
 			if ($bulk->count() > $statPredictionCount) {
 				return response()->json([
