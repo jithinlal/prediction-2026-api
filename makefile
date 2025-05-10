@@ -18,6 +18,9 @@ fresh-seed:
 	make migrate-fresh
 	make migrate-seed
 
+test:
+	./vendor/bin/sail artisan test
+
 clear:
 	./vendor/bin/sail artisan config:clear
 	./vendor/bin/sail artisan config:cache
