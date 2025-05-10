@@ -13,11 +13,13 @@ use App\Models\Player;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
-class PlayerController extends ApiController {
+class PlayerController extends ApiController
+{
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index(Request $request): PlayerCollection {
+	public function index(Request $request): PlayerCollection
+	{
 		$filter = new PlayerFilter();
 		$query = Player::query();
 
@@ -60,18 +62,21 @@ class PlayerController extends ApiController {
 	/**
 	 * Show the form for creating a new resource.
 	 */
-	public function create() {
+	public function create()
+	{
 		//
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(StorePlayerRequest $request) {
+	public function store(StorePlayerRequest $request)
+	{
 		//
 	}
 
-	public function import(ImportPlayerRequest $request): void {
+	public function import(ImportPlayerRequest $request): void
+	{
 		$bulk = collect($request->all())->map(function ($arr, $key) {
 			return Arr::except($arr, ['teamId', 'isStar', 'isInjured']);
 		});
@@ -82,28 +87,37 @@ class PlayerController extends ApiController {
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(Player $player): PlayerResource {
+	public function show(Request $request, Player $player): PlayerResource
+	{
+		$includeTeam = $request->query('team');
+		if ($includeTeam) {
+			$player->load('team');
+		}
+
 		return new PlayerResource($player);
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 */
-	public function edit(Player $player) {
+	public function edit(Player $player)
+	{
 		//
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(UpdatePlayerRequest $request, Player $player) {
+	public function update(UpdatePlayerRequest $request, Player $player)
+	{
 		//
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(Player $player) {
+	public function destroy(Player $player)
+	{
 		//
 	}
 }
